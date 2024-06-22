@@ -6,8 +6,8 @@ var count = 0.0
 for _ in 0..<20 {
     let input = String(readLine()!).split(separator : " ")
     if input[2] != "P" {
-        sum += Double(input[1] ?? "0.0")! * dic[String(input[2])]!    
-        count += Double(input[1] ?? "0.0")!
+        sum += Double(input[1])! * dic[String(input[2])]!    
+        count += Double(input[1])!
     }
 }
 print(sum / count)
