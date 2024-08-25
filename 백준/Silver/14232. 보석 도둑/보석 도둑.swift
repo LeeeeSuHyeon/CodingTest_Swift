@@ -14,4 +14,6 @@ for i in 2...num {
     }
 }
 print(arr.count)
-print(arr.map{String($0)}.joined(separator : " "))
+arr.forEach{
+    print($0, separator : " ")
+}
