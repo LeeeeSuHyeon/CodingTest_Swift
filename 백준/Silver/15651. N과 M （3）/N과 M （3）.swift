@@ -1,7 +1,8 @@
 let input = readLine()!.split(separator : " ").map{Int($0)!}
+var result = ""
 func recur(depth : Int, arr : [String]) {
     if depth == input[1] {
-        print(arr.joined(separator : " "))
+        result += ("\(arr.joined(separator : " "))" + "\n")
         return
     }
     
@@ -10,3 +11,4 @@ func recur(depth : Int, arr : [String]) {
     }
 }
 recur(depth : 0, arr : [])
+print(result)
