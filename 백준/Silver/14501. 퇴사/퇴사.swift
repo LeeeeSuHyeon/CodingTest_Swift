@@ -5,17 +5,16 @@ for _ in 0..<N {
     P.append(readLine()!.split(separator : " ").map{Int($0)!})
 }
 
-func recur(_ index : Int, _ value : Int, _ target : Int, _ count : Int) {
+func recur(_ index : Int, _ value : Int) {
     if index == N {
-        if target <= N {
-            answer = max(answer, value)
-        }
+        answer = max(answer, value)
         return
     }
-    if P[index][0] <= N - index && target <= count{
-        recur(index + 1, value + P[index][1], P[index][0], 1)
+    if index > N {
+        return
     }
-    recur(index + 1, value, target, count + 1)
+    recur(index + P[index][0], value + P[index][1])
+    recur(index + 1, value)
 }
-recur(0, 0, 0, 0)
+recur(0, 0)
 print(answer)
