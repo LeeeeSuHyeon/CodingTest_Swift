@@ -1,25 +1,18 @@
 import Foundation
-var flag = true
-while(flag) {
-    let input = Int(readLine()!)!
-    if input == 0 { flag = false }
-    else {
-        var count = 0
-        for i in input+1...(input * 2){
-            var isDecimal = true
-            if !(i == 2 || i == 3) {
-                for j in 2...Int(sqrt(Double(i))){
-                    if i % j == 0 {
-                        isDecimal = false
-                        break
-                    }
-                }
-            }
-
-            if isDecimal {
-                count += 1
-            }
+var n = 123456 * 2
+var primeNum = [Bool](repeating : true, count : n + 1)
+primeNum[0] = false
+primeNum[1] = false
+for i in 2...Int(sqrt(Double(n))){
+    if primeNum[i] {
+        for j in stride(from : i * 2, to : n + 1, by : i){
+            primeNum[j] = false
         }
-        print(count)
     }
+}
+
+while(true) {
+    let input = Int(readLine()!)!
+    if input == 0 { break }
+    print(primeNum[input+1...input*2].filter{$0}.count)
 }
