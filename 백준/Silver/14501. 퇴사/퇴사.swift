@@ -1,20 +1,27 @@
 let N = Int(readLine()!)!
-var P = [[Int]]()
-var answer = 0
+var TArr = [Int]()
+var PArr = [Int]()
 for _ in 0..<N {
-    P.append(readLine()!.split(separator : " ").map{Int($0)!})
+    let input = readLine()!.split(separator: " ").map{Int($0)!}
+    TArr.append(input[0])
+    PArr.append(input[1])
 }
 
-func recur(_ index : Int, _ value : Int) {
+var dp = [Int](repeating: -1, count: N + 1)
+func recur(index : Int) -> Int{
     if index == N {
-        answer = max(answer, value)
-        return
+        return 0
     }
     if index > N {
-        return
+        return -999999
     }
-    recur(index + P[index][0], value + P[index][1])
-    recur(index + 1, value)
+    if dp[index] != -1 {
+        return dp[index]
+    }
+    dp[index] = max(recur(index: index + TArr[index]) + PArr[index], recur(index: index + 1))
+    
+    return dp[index]
 }
-recur(0, 0)
-print(answer)
+
+let _ = recur(index: 0)
+print(dp.max() ?? 0)
