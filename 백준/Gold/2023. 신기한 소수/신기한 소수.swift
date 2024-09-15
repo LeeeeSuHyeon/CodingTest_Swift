@@ -27,4 +27,7 @@ func recur(_ index : Int, _ num : Int) {
         }
     }
 }
-recur(0, 0)
+let primeNum = [2, 3, 5, 7]
+for i in primeNum {
+    recur(1, i)
+}
