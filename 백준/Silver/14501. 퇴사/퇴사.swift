@@ -7,21 +7,13 @@ for _ in 0..<N {
     PArr.append(input[1])
 }
 
-var dp = [Int](repeating: -1, count: N + 1)
-func recur(index : Int) -> Int{
-    if index == N {
-        return 0
-    }
-    if index > N {
-        return -999999
-    }
-    if dp[index] != -1 {
-        return dp[index]
-    }
-    dp[index] = max(recur(index: index + TArr[index]) + PArr[index], recur(index: index + 1))
-    
-    return dp[index]
-}
+var dp = [Int](repeating: 0, count: N + 1)
 
-let _ = recur(index: 0)
+for i in stride(from: N - 1, to: -1, by: -1){
+    if i + TArr[i] > N {
+        dp[i] = dp[i + 1]
+    } else {
+        dp[i] = max(dp[(i + TArr[i])] + PArr[i], dp[i + 1])
+    }
+}
 print(dp.max() ?? 0)
