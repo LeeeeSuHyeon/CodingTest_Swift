@@ -8,20 +8,17 @@ for _ in 0..<N {
     values.append(input[1])
 }
 
-var dp = [[Int]](repeating: Array(repeating: -1, count: 100_001), count: N + 1)
+var dp = [[Int]](repeating: Array(repeating: 0, count: K + 1), count: N + 1)
 
-func recur(_ index : Int, _ weight : Int) -> Int {
-    if weight > K {
-        return -9999999
+for i in 1...N {
+    for weight in 0...K {       // weight : 배낭의 남은 공간
+        // 현재 배낭에 담으려는 무게(weights[i - 1]가 배낭에 남은 공간(weight) 보다 작을 때 즉, 아이템을 넣을 수 없을 때
+        if weight < weights[i - 1]  {
+            dp[i][weight] = dp[i - 1][weight]
+        } else {
+            dp[i][weight] = max(dp[i - 1][weight - weights[i - 1]] + values[i - 1], dp[i - 1][weight])
+        }
+        
     }
-    if index == N {
-        return 0
-    }
-    if dp[index][weight] != -1 {
-        return dp[index][weight]
-    }
-    dp[index][weight] = max(recur(index + 1, weight + weights[index]) + values[index], recur(index + 1, weight))
-    return  dp[index][weight]
 }
-let _ = recur(0, 0)
 print(dp.flatMap{$0}.max() ?? 0)
