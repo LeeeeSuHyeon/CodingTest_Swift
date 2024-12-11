@@ -12,8 +12,8 @@ let (A, B) = (AB[0], AB[1])
 let CD = readLine()!.split(separator: " ").map{Int($0)!}
 let (C, D) = (CD[0], CD[1])
 
-let bunmo = lcm(B, D)
-let bunja = bunmo / B * A + bunmo / D * C
+let a = A * D + B * C
+let b = B * D
+let n = gcd(a, b)
 
-let gcdA = gcd(bunmo, bunja)
-print("\(bunja / gcdA) \(bunmo / gcdA)")
+print("\(a / n) \(b / n)")
