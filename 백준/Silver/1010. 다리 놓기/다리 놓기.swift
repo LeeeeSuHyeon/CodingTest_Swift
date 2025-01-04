@@ -1,6 +1,6 @@
 var dp = Array(repeating: Array(repeating: 0, count: 31), count: 31) // 2차원 배열로 만들어서 dp[10][3] : 10개 중 3개를 선택할 경우의 수
 
-for i in 0...30 {
+for i in 1...30 {
     for j in 0...i {
         if i == j || j == 0 {
             dp[i][j] = 1
