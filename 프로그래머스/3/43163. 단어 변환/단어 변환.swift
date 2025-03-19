@@ -1,34 +1,33 @@
 import Foundation
 
 func solution(_ begin:String, _ target:String, _ words:[String]) -> Int {
-    var answer = Int.max
-    var strCount = begin.count
     var visited = Array(repeating: false, count: words.count)
+    var queue: [(String, Int)] = [(begin, 0)]
+    var answer = 0
     
-    func recur(index: Int, value: String) {
-        
-        if value == target {
-            answer = min(answer, index)
-            return
+    while true {
+        let (str, count) = queue.removeFirst()
+        if str == target { 
+            answer = count
+            break 
         }
         
         for i in 0..<words.count {
-            let word = words[i]
+            if visited[i] { continue } 
+            
             var sameCount = 0
-            for j in 0..<strCount {
-                let valueIndex = value.index(value.startIndex, offsetBy: j)
-                let wordIndex = word.index(word.startIndex, offsetBy: j)
-                if value[valueIndex] == word[wordIndex] { sameCount += 1 }
+            zip(Array(str), Array(words[i])).forEach {
+                if $0.0 == $0.1 { sameCount += 1}
             }
             
-            if sameCount + 1 == strCount && !visited[i] {
+            if sameCount + 1 == begin.count {
+                queue.append((words[i], count + 1))
                 visited[i] = true
-                recur(index: index + 1, value: word)
-                visited[i] = false
             }
         }
+        
+        if queue.isEmpty { break }
     }
     
-    recur(index: 0, value: begin)
-    return answer == Int.max ? 0 : answer
+    return answer
 }
