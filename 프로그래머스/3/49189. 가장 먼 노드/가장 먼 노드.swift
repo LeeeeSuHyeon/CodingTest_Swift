@@ -1,5 +1,36 @@
 import Foundation
 
+struct Queue {
+    private var inStack: [(Int, Int)]
+    private var outStack: [(Int, Int)]
+
+    init(_ elements: [(Int, Int)]) {
+        self.inStack = elements
+        self.outStack = []
+    }
+    
+    init() {
+        self.inStack = []
+        self.outStack = []
+    }
+
+    var isEmpty: Bool {
+        return inStack.isEmpty && outStack.isEmpty
+    }
+
+    mutating func enqueue(_ element: (Int, Int)) {
+        inStack.append(element)
+    }
+
+    mutating func dequeue() -> (Int, Int)? {
+        if outStack.isEmpty {
+            outStack = inStack.reversed()
+            inStack = []
+        }
+        return outStack.popLast()
+    }
+}
+
 func solution(_ n:Int, _ edge:[[Int]]) -> Int {
     var graph = [[Int]](repeating: [Int](), count: n + 1) // 0번째 인덱스 제외하기 위해 n + 1개 생성
     var distance = Array(repeating: 0, count: n + 1)      // 1번 노드부터 떨어진 거리
@@ -10,17 +41,20 @@ func solution(_ n:Int, _ edge:[[Int]]) -> Int {
         graph[$0[1]].append($0[0])
     }
 
-    var queue = graph[1].map{(1, $0)} // 1번 노드와 연결된 노드 삽입 (이전 노드, 현재 노드) 튜플 형태
+    var queue: Queue = Queue() // 1번 노드와 연결된 노드 삽입 (이전 노드, 현재 노드) 튜플 형태
+    graph[1].forEach {
+        queue.enqueue((1, $0))
+        visited[$0] = true
+    }
     visited[1] = true
-    graph[1].forEach {visited[$0] = true}
     
     while !queue.isEmpty {
-        let (prevNode, currentNode) = queue.removeFirst() 
+        let (prevNode, currentNode) = queue.dequeue()!
         distance[currentNode] = distance[prevNode] + 1
         
         for next in graph[currentNode] {
             if visited[next] { continue }
-            queue.append((currentNode, next))
+            queue.enqueue((currentNode, next))
             visited[next] = true
         }
     }
