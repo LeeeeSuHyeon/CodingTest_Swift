@@ -1,30 +1,29 @@
 import Foundation
 
 func solution(_ brown:Int, _ yellow:Int) -> [Int] {
-
-//     x * y = brown + yellow 
-//     2x + (y - 2) * 2 = brown
-//     x - 2 * y - 2 = yellow 
+    let total = brown + yellow 
+    var array = [[Int]]()
+    var answer = [Int]()
     
-//     x = (brown + yellow) / y
-//     x = yellow / (y - 2) + 2
-    
-//     (brown + yellow) / y = yellow / (y - 2) + 2
-    let total = brown + yellow
-    // var y = 0
-    
-    for y in 3...(total / 2){
-        if(total % y == 0){
-            let x = total / y
-            if((x - 2) * (y - 2) == yellow){
-                return [x, y]
-            }
-        }
-//         if(total % i == 0 && total / i == yellow / (i - 2) + 2){
-//             y = i
-//             break
-//         }
+    for i in 3...Int(sqrt(Double(total))) where total % i == 0 { // 약수 구하기 (중앙에 다른 색이 칠해지려면 3개 이상부터 가능)
+        array.append([total / i, i]) // 가로의 길이는 세로의 길이와 같거나 세로 길이보다 김
     }
     
-    return []
+    for xy in array {
+        let (x, y) = (xy[0], xy[1])
+        if (x - 2) * (y - 2) == yellow && x * y - yellow == brown {
+            answer = [x, y]
+            break
+        }
+    }
+    return answer
 }
+
+/*
+answer [x, y]
+[x-2, y-2] -> (x-2) * (y-2) = yellow
+brown = x * y - yellow
+brwon = x * 2 + (y - 2) * 2
+
+
+*/
