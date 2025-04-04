@@ -1,27 +1,23 @@
 import Foundation
 
 func solution(_ k:Int, _ dungeons:[[Int]]) -> Int {
-    var answer = 0
-    var currentK = k
     let count = dungeons.count
-    var sortedDungeons = dungeons.sorted { $0[0] > $1[0] }
+    var answer = 0
     var visited = Array(repeating: false, count: count + 1)
 
-    func dfs(_ index: Int, _ value: Int) {
-        answer = max(answer, value)
-        if currentK < 0 { return }
+    func dfs(_ k: Int, _ value: Int) {
+        answer = max(answer, value) // if index == count {} 조건이 있으면 2번 인덱스 탐색 후 1번 인덱스 탐색이 불가능함 
+        if k < 0 { return }
         
         for i in 0..<count {
-            if sortedDungeons[i][0] <= currentK && !visited[i] {
-                currentK -= sortedDungeons[i][1]
+            if dungeons[i][0] <= k && !visited[i] {
                 visited[i] = true
-                dfs(index + 1, value + 1)
-                currentK += sortedDungeons[i][1]
+                dfs(k - dungeons[i][1], value + 1)
                 visited[i] = false
             }
         }
     }
 
-    dfs(0, 0)
+    dfs(k, 0)
     return answer
 }
