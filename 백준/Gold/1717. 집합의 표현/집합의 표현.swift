@@ -1,41 +1,34 @@
-let nm = readLine()!.split(separator: " ").map{Int($0)!}
-let (n, m) = (nm[0], nm[1])
-var rank = [Int](repeating: 0, count: n + 1)
-var parent = [Int](repeating: 0, count: n + 1)
-for i in 1...n {
-    parent[i] = i
-}
+let input = readLine()!.split(separator: " ").map{Int(String($0))!}
+let (n, m) = (input[0], input[1])
+
+var parent = Array(0...n)
 
 for _ in 0..<m {
-    let xab = readLine()!.split(separator: " ").map{Int($0)!}
-    let (x, a, b) = (xab[0], xab[1], xab[2])
-    if x == 0 {
-        union(a, b)
-    } else{
-        print(find(a) == find(b) ? "YES" : "NO")
-    }
-}
-
-func union(_ a : Int, _ b : Int) {
-    let A = find(a)
-    let B = find(b)
-    if A == B {
-        return
-    }
+    let input = readLine()!.split(separator: " ").map {Int(String($0))!}
+    let (operation, a, b) = (input[0], input[1], input[2])
     
-    if rank[A] < rank[B] {
-        parent[A] = B
+    if operation == 0 { // Union
+        union(&parent, a, b)
     } else {
-        parent[B] = A
-        rank[A] += 1
+        let isSameParent = findParent(&parent, a) == findParent(&parent, b)
+        print(isSameParent ? "YES" : "NO")
     }
 }
 
-func find(_ a : Int) -> Int {
-    if a == parent[a] {
-        return a
+func findParent(_ parent: inout [Int], _ node: Int) -> Int {
+    if parent[node] != node {
+        parent[node] = findParent(&parent, parent[node])
+    } 
+    return parent[node]
+}
+
+func union(_ parent: inout [Int], _ a: Int, _ b: Int) {
+    let rootA = findParent(&parent, a)
+    let rootB = findParent(&parent, b)
+    
+    if rootA < rootB {
+        parent[rootB] = rootA
     } else {
-        parent[a] = find(parent[a])
-        return find(parent[a])
+        parent[rootA] = rootB
     }
 }
