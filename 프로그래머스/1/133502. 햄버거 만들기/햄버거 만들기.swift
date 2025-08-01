@@ -9,9 +9,11 @@ func solution(_ ingredient:[Int]) -> Int {
         
         let count = arr.count
         
-        if count >= 4 && arr[count - 1] == 1 && arr[count - 2] == 3 && arr[count - 3] == 2 && arr[count - 4] == 1 {
-            arr = Array(arr.prefix(count - 4))
-            answer += 1
+        if count >= 4 {
+            if Array(arr.suffix(4)) == [1, 2, 3, 1] {
+                answer += 1
+                arr.removeLast(4)
+            }
         }
     }
     
