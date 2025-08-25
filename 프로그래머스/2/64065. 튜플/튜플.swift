@@ -1,42 +1,9 @@
-import Foundation
-
 func solution(_ s:String) -> [Int] {
-    var arr = [[Int]]()
-    var temp = [Int]()
-    var numString = ""
-    var flag = 0
-    var answer = [Int]()
-    
-    var s = s
-    s.removeLast()
-    s.removeFirst()
-    
-    
-    for char in s {
-        if flag == 0, char == "," { continue }
-        
-        if char == "{" {
-            flag += 1
-        } else if char == "}" {
-            temp.append(Int(numString)!)
-            flag -= 1
-        } else if let num = Int(String(char)) {
-            numString += String(char)
-        } else if char == "," {
-            temp.append(Int(numString)!)
-            numString = ""
-        }
-        
-        if flag == 0 {
-            arr.append(temp)
-            temp = []
-            numString = ""
-        }
+    var components = [Int: Int]()
+
+    s.split { !$0.isNumber }.map { Int(String($0))! }.forEach {
+        components[$0, default: 0] += 1
     }
-    
-    // print(arr.sorted {$0.count < $1.count }.flatMap { $0 })
-    arr.sorted {$0.count < $1.count }.flatMap { $0 }.forEach { 
-        if !answer.contains($0) { answer.append($0) }
-    }
-    return answer
+
+    return components.sorted { $0.value > $1.value }.map { $0.key }
 }
