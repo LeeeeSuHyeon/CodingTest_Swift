@@ -3,24 +3,23 @@ import Foundation
 func solution(_ topping:[Int]) -> Int {
     guard topping.count != 1 else { return 0 }
     
-    var toppingGap = Array(repeating: -1, count: topping.count)
-    var leftTopping = Set<Int>()
+    var answer = 0
+    var leftTopping =  [Int: Int]()
     var rightTopping = [Int: Int]()
-  
-    for t in topping {
-        rightTopping[t, default: 0] += 1
-    }
     
-    for i in 0..<topping.count {
-        let t = topping[i]
-        rightTopping[t]! -= 1
-        if rightTopping[t]! == 0 { rightTopping[t] = nil }
+    topping.forEach { rightTopping[$0, default: 0] += 1 }
+    
+    topping.forEach {
+        rightTopping[$0]! -= 1
+        if rightTopping[$0]! == 0 { rightTopping[$0] = nil }
         
-        leftTopping.insert(t)
-        toppingGap[i] = leftTopping.count - rightTopping.keys.count
+        leftTopping[$0, default: 0] += 1
+        if leftTopping.keys.count - rightTopping.keys.count == 0 {
+            answer += 1
+        }
     }
     
-    return toppingGap.filter { $0 == 0 }.count
+    return answer
 }
 
 /*
