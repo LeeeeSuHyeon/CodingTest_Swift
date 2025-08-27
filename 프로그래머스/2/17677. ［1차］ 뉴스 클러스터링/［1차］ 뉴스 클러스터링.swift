@@ -34,8 +34,8 @@ func solution(_ str1:String, _ str2:String) -> Int {
 }
 
 func isEnglish(_ str: String) -> Bool {
-    let result = str.replacingOccurrences(of: "[^A-Za-z]", with: "", options: .regularExpression)
-    return str.count == result.count
+    let pattern = "^[A-Za-z]{2}$"
+    return str.range(of: pattern, options: .regularExpression) != nil
 }
 
 /*
