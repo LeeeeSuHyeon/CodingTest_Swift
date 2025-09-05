@@ -1,28 +1,13 @@
 import Foundation
 
 func solution(_ skill:String, _ skill_trees:[String]) -> Int {
-    let skill = skill.map { $0 }
 
-    func isAvailableSkillTree(_ skillTree: [Character]) -> Bool {
-        var skill = skill
-        var skillTree = skillTree
-        var index = 0
-        
-        while index < skillTree.count {
-            if skill[index] == skillTree[index] { 
-                index += 1
-            } else {
-                return false
-            }
-        }
-        
-        return true
+    func isAvailableSkillTree(_ skill: String, _ skillTree: String) -> Bool {
+        let filteredSkillTree = skillTree.filter { skill.contains($0) }
+        return skill.starts(with: filteredSkillTree)
     }
     
-    
-    return skill_trees.map { skillTree in 
-        skillTree.map { $0 }.filter { skill.contains($0) } 
-    }.filter { isAvailableSkillTree($0) }.count
+    return skill_trees.filter { isAvailableSkillTree(skill, $0) }.count
     
 }
 
