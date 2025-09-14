@@ -6,23 +6,20 @@ func solution(_ bridge_length:Int, _ weight:Int, _ truck_weights:[Int]) -> Int {
     var currentTotalWeight = 0
     var answer = 0
     
-    while index < truck_weights.count {
+    while !onBridge.isEmpty {
         answer += 1 // 1초 증가
-        let outWeight = onBridge.removeLast()
-        currentTotalWeight -= outWeight
+        currentTotalWeight -= onBridge.removeLast()
         
-        let currentWeight = truck_weights[index]
-        if currentTotalWeight + currentWeight <= weight {
-            onBridge = [currentWeight] + onBridge
-            currentTotalWeight += currentWeight
-            index += 1
-        } else {
-            onBridge = [0] + onBridge
+        if onBridge.count < bridge_length, index < truck_weights.count {
+            let next = truck_weights[index]
+            if currentTotalWeight + next <= weight {
+                currentTotalWeight += next
+                onBridge = [next] + onBridge
+                index += 1
+            } else {
+                onBridge = [0] + onBridge
+            }
         }
-    }
-    
-    if let firstIndex = onBridge.firstIndex(where: { $0 != 0 }) {
-        answer += bridge_length - firstIndex
     }
     
     return answer
