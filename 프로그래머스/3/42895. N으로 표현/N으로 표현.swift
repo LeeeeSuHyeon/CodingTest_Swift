@@ -1,34 +1,33 @@
 import Foundation
 
-func solution(_ N:Int, _ number:Int) -> Int {
-    if N == number { return 1 }
-    
-    var dp = [Int: Set<Int>]()
-    dp[1] = [N]
-    
-    for i in 2...8 {
-        var current = Set<Int>()
-        
-        let num = Int(String(repeating: "\(N)", count: i))!
-        current.insert(num)
-        
-        for j in 1..<i {
-            for x in dp[j]! {
-                for y in dp[i-j]! {
-                    current.insert(x + y)
-                    current.insert(x - y)
-                    current.insert(y - x)
-                    current.insert(x * y)
-                    if y != 0 { current.insert(x / y) }
-                    if x != 0 { current.insert(y / x) }
-                }
-            }
-        }
-        
-        dp[i] = current
-        
-        if current.contains(number) { return i }
+func dfs(_ N: Int, _ number: Int, _ depth: Int, _ temp: Int, _ answer: inout Int)  {
+    if depth > 8 {
+        return
     }
 
-    return -1
+    if temp == number && (answer > depth || answer == -1) {
+        answer = depth
+    }
+
+    var calc = 0
+
+    for index in 0 ..< 8 {
+        calc = calc * 10 + N
+        dfs(N, number, depth + 1 + index, temp + calc, &answer)
+        dfs(N, number, depth + 1 + index, temp - calc, &answer)
+        
+        // 곱셈 (overflow 방지)
+        if abs(temp) <= Int.max / max(calc, 1) {
+            dfs(N, number, depth + 1 + index, temp * calc, &answer)
+        }
+        
+        dfs(N, number, depth + 1 + index, temp / calc, &answer)
+    }
+}
+
+func solution(_ N:Int, _ number:Int) -> Int {
+
+    var answer = -1
+    dfs(N, number, 0, 0, &answer)
+    return answer
 }
