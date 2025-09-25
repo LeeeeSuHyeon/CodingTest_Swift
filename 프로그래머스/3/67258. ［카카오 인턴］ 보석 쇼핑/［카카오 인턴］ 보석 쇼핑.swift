@@ -7,7 +7,7 @@ func solution(_ gems:[String]) -> [Int] {
     var left = 0
     var right = 0
     
-    while right <= gems.count, left <= right {
+    while left <= gems.count, right <= gems.count {
         
         if gemsCount.values.count == gemsKind.count {
             if answer[1] - answer[0] > right - left {
